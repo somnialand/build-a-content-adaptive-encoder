@@ -260,12 +260,15 @@ if st.button("Analyze & Compress"):
             selected_codec = "libopus"
             ext = ".opus"
 
-        st.info(f"**Executing Encoder:** Routing directly to **{selected_codec.upper()}** at 64 kbps.")
+        if selected_codec == "aac":
+            st.info("**Executing Encoder:** Routing directly to **AAC** at fixed 64 kbps.")
+        else:
+            st.info(f"**Executing Encoder:** Routing directly to **OPUS** at {opus_bitrate} kbps.")
 
         # --- BƯỚC 3: TRANSCODING ---
         with st.spinner(f"Transcoding..."):
             output_path = input_path.replace(".wav", ext)
-            compress_audio(input_path, output_path, selected_codec)
+            compress_audio(input_path, output_path, selected_codec, opus_bitrate)
             
             original_size = os.path.getsize(input_path) / 1024
             compressed_size = os.path.getsize(output_path) / 1024
